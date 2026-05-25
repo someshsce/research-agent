@@ -25,43 +25,9 @@ This isn't a single LLM call dressed up as an "agent" — it's a proper LangGrap
 
 ## 🏗️ Architecture
 
-```
-                       ┌──────────────┐
-   query ────────────► │    ROUTER    │  Claude classifies the query
-                       └──────┬───────┘  → company | topic | comparison | unsupported
-                              │
-                ┌─────────────┴─────────────┐
-                │                           │
-        unsupported ▼                       ▼ company / topic / comparison
-            ┌───────────┐             ┌─────────────┐
-            │  REFUSAL  │             │   PLANNER   │  Type-aware prompt
-            └─────┬─────┘             └──────┬──────┘  → 3-5 research tasks
-                  │                          │
-                  │                          ▼
-                  │                  ┌──────────────┐
-                  │                  │   EXECUTOR   │  Shared across types:
-                  │                  │              │   • Tavily web search
-                  │                  │              │   • Tavily news search
-                  │                  │              │   • Wikipedia
-                  │                  └──────┬───────┘
-                  │                         │
-                  │                         ▼
-                  │                  ┌──────────────┐  Type-aware self-eval
-                  │                  │  REFLECTOR   │  ─── enough info?
-                  │                  └──────┬───────┘             │
-                  │                         │                     │
-                  │                  need more │                  │ done
-                  │                         └─loops back──┐       │
-                  │                                       │       ▼
-                  │                                       │ ┌─────────────┐
-                  │                                       │ │ SYNTHESIZER │
-                  │                                       │ └──────┬──────┘
-                  │                                       │        │ type-specific schema
-                  ▼                                       ▼        ▼
-              RefusalReport                            (loop)   CompanyBrief
-                  │                                              | TopicReport
-                  └──────────────────► END ◄─────────────────────┘ | ComparisonReport
-```
+<img width="680" height="656" alt="research_agent_architecture" src="https://github.com/user-attachments/assets/77bfdac8-5918-4e7c-9890-1091a931a4bd" />
+
+---
 
 ### Why this design
 
@@ -125,7 +91,9 @@ research-agent/
 ├── run_cli.py             # CLI runner
 ├── requirements.txt
 ├── .env.example
+├── .gitignore
 ├── README.md
+├── LICENSE
 └── agent/
     ├── __init__.py
     ├── graph.py           # LangGraph wiring + 2 conditional edges
