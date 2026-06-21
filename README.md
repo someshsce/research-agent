@@ -4,6 +4,10 @@ An **agentic workflow** that classifies any research query, routes it to the rig
 
 > Submission for the Lumiq take-home (Option A — Research Agent).
 
+
+https://github.com/user-attachments/assets/1977a114-1a77-4cc6-8606-95edf0bc5d4a
+
+
 ---
 
 ## ✨ What it does
